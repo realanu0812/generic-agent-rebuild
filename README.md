@@ -1,45 +1,119 @@
 # Generic Agent Rebuild
 
-Rebuilding the GenericAgent research paper from scratch as a learning project.
+Rebuilding the GenericAgent research paper from scratch as a learning-focused AI engineering project.
+
+---
 
 ## Goal
 
-I want to deeply understand how modern AI agents work by building a simplified version step by step.
+The goal of this project is to deeply understand how modern AI agents work by implementing a simplified version step by step.
 
 This project focuses on:
 
 - AI agents
 - memory systems
 - tool calling
-- context management
-- self-improving workflows
+- context engineering
+- SOP-based learning
+- long-running workflows
 
-## Paper
+---
 
-GenericAgent: A Token-Efficient Self-Evolving LLM Agent via Contextual Information Density Maximization
+## Inspiration
+
+Paper:
+**GenericAgent: A Token-Efficient Self-Evolving LLM Agent via Contextual Information Density Maximization**
+
+Main idea from the paper:
+
+> AI agents perform better when their context contains only high-value decision-relevant information.
+
+Instead of endlessly increasing context size, the system focuses on:
+- memory organization
+- context compression
+- reusable SOPs
+- efficient tool usage
+
+---
 
 ## Planned Features
 
+### MVP
 - CLI agent
-- Tool system
-- Working memory
-- Long-term memory
-- SOP generation
-- Context compression
-- Reflection loop
+- tool execution
+- working memory
+- session logging
+- SOP storage
+- basic memory layers
+
+### Later Versions
+- context compression
+- memory retrieval
+- browser tools
+- reflection loop
+- autonomous workflows
+
+---
+
+## Project Structure
+
+```text
+src/
+memory/
+docs/
+progress/
+tests/
+examples/
+```
+
+---
 
 ## Current Status
 
 Phase 1 — Research & Architecture
 
+---
+
 ## Tech Stack
 
 - Python
-- LLM APIs
-- SQLite / Markdown files
+- OpenAI / Anthropic APIs
+- SQLite / Markdown memory
 - Typer CLI
 - Pydantic
 
-## Build in Public
+---
 
-I’ll be posting regular updates while building this project.
+## Learning Philosophy
+
+This is not a “perfect reproduction” project.
+
+The goal is:
+- learning deeply
+- building publicly
+- understanding architecture
+- improving engineering skills
+- documenting the full journey
+
+---
+
+## Build In Public
+
+I’ll be posting regular updates while building this project:
+- architecture decisions
+- debugging
+- implementation progress
+- failures
+- lessons learned
+
+---
+
+## Progress Log
+
+- [x] Project setup
+- [x] Initial architecture
+- [ ] CLI agent
+- [ ] Tool registry
+- [ ] Memory manager
+- [ ] SOP system
+- [ ] Context compression
