@@ -1,25 +1,29 @@
 from rich import print
 
+from .tool_registry import ToolRegistry
+
 
 class Agent:
 
+    def __init__(self):
+
+        self.tool_registry = ToolRegistry()
+
     def run(self, task: str):
-        print(f"[cyan]Agent started[/cyan]")
+
+        print("[cyan]Agent started[/cyan]")
         print(f"[yellow]Task:[/yellow] {task}")
+
+        print("\n[blue]Available Tools:[/blue]")
+
+        for tool_name in self.tool_registry.list_tools():
+            print(f"- {tool_name}")
 
         response = self.think(task)
 
-        print(f"[green]Final Response:[/green]")
+        print("\n[green]Final Response:[/green]")
         print(response)
 
     def think(self, task: str) -> str:
-        """
-        Placeholder reasoning step.
-
-        Later this will call:
-        - LLM
-        - tools
-        - memory
-        """
 
         return f"I understand the task: {task}"
