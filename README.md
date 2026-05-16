@@ -108,12 +108,31 @@ I’ll be posting regular updates while building this project:
 
 ---
 
+## Current Capabilities
+
+The agent can currently:
+
+- accept tasks through CLI
+- register tools
+- execute tools
+- read files using a modular tool system
+
+Example:
+
+```bash
+python -m src.generic_agent_rebuild.main "file_read: examples/sample.txt"
+```
+
+---
+
+
 ## Progress Log
 
 - [x] Project setup
 - [x] Initial architecture
-- [ ] CLI agent
-- [ ] Tool registry
+- [x] CLI agent
+- [x] Tool registry
+- [x] First tool execution flow
 - [ ] Memory manager
 - [ ] SOP system
 - [ ] Context compression
