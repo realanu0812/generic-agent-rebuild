@@ -1,12 +1,14 @@
 from rich import print
 
 from .tool_registry import ToolRegistry
+from .llm.client import LLMClient
 
 
 class Agent:
 
     def __init__(self):
         self.tool_registry = ToolRegistry()
+        self.llm_client = LLMClient()
 
     def run(self, task: str):
         print("[cyan]Agent started[/cyan]")
@@ -22,25 +24,16 @@ class Agent:
         print(response)
 
     def think(self, task: str) -> str:
+
+        prompt = f"""
+        You are a helpful AI agent.
+
+        User task:
+        {task}
+
+        Respond concisely.
         """
-        Very simple temporary decision logic.
 
-        Later, the LLM will decide:
-        - whether a tool is needed
-        - which tool to call
-        - what arguments to pass
-        """
+        response = self.llm_client.generate(prompt)
 
-        if task.startswith("file_read:"):
-            path = task.replace("file_read:", "").strip()
-
-            tool = self.tool_registry.get_tool("file_read")
-
-            if tool is None:
-                return "Error: file_read tool is not available."
-
-            result = tool.execute(path=path)
-
-            return f"Tool Result:\n{result}"
-
-        return f"I understand the task: {task}"
+        return response
