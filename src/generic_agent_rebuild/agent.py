@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from rich import print
 
 from .llm.client import LLMClient
@@ -17,12 +18,65 @@ class Agent:
         print("[cyan]Agent started[/cyan]")
         print(f"[yellow]Task:[/yellow] {task}")
 
-        response = self.think(task)
+        messages = [
+        {
+        "role": "user",
+        "content": task
+        }
+                    ]
+
+        response = self.run_agent_loop(messages)
 
         print("\n[green]Final Response:[/green]")
         print(response)
 
-    def think(self, task: str):
+    def run_agent_loop(self, messages):
+
+        max_steps = 5
+
+        for step in range(max_steps):
+
+            print(f"\n[magenta]Agent Step {step + 1}[/magenta]")
+
+            response = self.think(messages)
+
+            if response["type"] == "response":
+                return response["content"]
+
+            if response["type"] == "tool_call":
+
+                tool_name = response["tool"]
+                args = response["args"]
+
+                tool = self.tool_registry.get_tool(tool_name)
+
+                if tool is None:
+                    return f"Tool not found: {tool_name}"
+
+                try:
+                    result = tool.execute(**args)
+
+                except Exception as e:
+                    result = f"Tool execution error: {str(e)}"
+
+                print(f"\n[blue]Tool Executed:[/blue] {tool_name}")
+
+                print(f"\n[yellow]Tool Result:[/yellow]")
+                print(result)
+
+                messages.append({
+                    "role": "assistant",
+                    "content": str(response)
+                })
+
+                messages.append({
+                    "role": "user",
+                    "content": f"Tool result:\n{result}"
+                })
+
+        return "Agent stopped: max steps reached"
+
+    def think(self, messages):
 
         tools_description = self.build_tools_prompt()
 
@@ -37,6 +91,8 @@ Available tools:
 Rules:
 - Respond ONLY in valid JSON.
 - Do not add explanations outside JSON.
+- If the task is complete, return a normal response.
+- If you need external information, use a tool.
 
 Response formats:
 
@@ -55,8 +111,8 @@ Tool call:
     }}
 }}
 
-User task:
-{task}
+Conversation:
+{messages}
 """
 
         llm_response = self.llm.generate(prompt)
@@ -69,7 +125,7 @@ User task:
         response_type = parsed.get("type")
 
         if response_type == "response":
-            return parsed.get("content", "")
+            return parsed
 
         if response_type == "tool_call":
 
@@ -92,7 +148,7 @@ User task:
             except TypeError as e:
                 return f"Tool argument error: {str(e)}"
 
-            return f"Tool Result:\n{result}"
+            return parsed
 
         return "Unknown response type"
 
